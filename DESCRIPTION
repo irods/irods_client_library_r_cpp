@@ -6,7 +6,7 @@ Date: 2015-12-14
 Author: Radovan Chytracek, Bernhard Sonderegger, Richard Cote
 Maintainer: Radovan Chytracek <radovan.chytracek@rd.nestle.com>
 Description: The irods package provides a set of R functions modeled after iRODS the icommands tools
-             to allow file (data object) manipultation, storage and retrieval as well as searching.
+             to allow file (data object) manipulation, storage and retrieval as well as searching.
 License: BSD_3_clause
 Imports: Rcpp (>= 0.12.2)
 LinkingTo: Rcpp
