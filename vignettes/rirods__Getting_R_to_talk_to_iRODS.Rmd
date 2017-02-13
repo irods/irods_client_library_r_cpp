@@ -1,0 +1,229 @@
+---
+title: "rirods: Getting R to talk to iRODS"
+author: "Bernhard Sonderegger"
+date: "2016-06-15"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Background
+The Integrated Rule-Oriented Data System ([iRODS](http://irods.org/)) is open source data management software for storing, searching, organizing, and sharing files and datasets that are large, important, and complex. Thousands of businesses, research centers, and government agencies worldwide use iRODS for flexible, policy-based management of files and metadata that span storage devices and locations.
+
+The rirods package allows direct access to iRODS from within R. It has been engineered to have semantics equivalent to the iCommands and can easily be used as a basis for further customization.
+
+## Implementation
+
+The `rirods` package is based on the iCommands C++ code and is called from R using the Rcpp mechanism. Where appropriate, R objects such as data frames are accepted and returned.
+
+The design minimizes dependency on tools beyond iRODS itself in order to both limit complexity of deployment and to benefit from the performance optimizations present in the core iRODS.
+
+Only a subset of the iCommands has been implemented as the package is targeted towards users rather than admins of iRODS.
+
+## Prerequisites
+
+It is necessary to have the **irods-runtime** and **irods-devel** packages installed on the system running R.
+
+Within `R`, the **Rcpp** package is required.
+
+## Installation
+
+`rirods` is installed like any other R package using the `install.packages()` function.
+```{r, eval = FALSE}
+install.packages('./rirods_1.0.tar.gz', repos = NULL, type="source")
+```
+
+### Authentication
+
+An `iinit()` function is provided, however this is insecure as the password is passed as a standard string argument. **It is recommended to run the `iinit` iCommand from outside R.** All `rirods` functions will honor this authentication.
+
+## Usage
+
+### Getting information
+The `ienv()` function will return a character vector, containing details of the local irods environment configuration. This allows individual fields to be addressed directly:
+```{r,echo=FALSE, results='hide'}
+## Use knitr::kable in place of View
+View <- function(x){return(knitr::kable(x))}
+
+## More compact display of code and output
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r, results='asis'}
+library(rirods)
+# Get ienv information fields
+View(names(ienv()))
+
+# Get iRODS zone name
+zoneName <- ienv()$irods_zone_name
+zoneName
+```
+
+```{r,echo=FALSE, results='hide'}
+## Set some stuff up in iRODS
+demoDir = paste("", zoneName, "DemoCollection", sep = "/")
+
+
+## Check if 
+demoDirExists <- TRUE
+myEnv <- sys.frame(sys.nframe())
+tryCatch(
+  ils(demoDir),
+  error = function(w){
+    eval(substitute(demoDirExists <- FALSE), myEnv)
+  }
+)
+if (demoDirExists){
+  irm(demoDir, force = TRUE, recursive = TRUE)
+}
+
+imkdir(demoDir)
+icd(demoDir)
+imkdir("Collection_A")
+imkdir("Collection_B")
+imkdir("Collection_C")
+
+localfile = tempfile()
+write(21:40, localfile)
+iput(localfile, "Data_object_A")
+imeta_add("d", "Data_object_A", "A;V;U;")
+imeta_add("d", "Data_object_A", "Vignette demo file;TRUE;;")
+imeta_add("d", "Data_object_A", "File type;A;;")
+write.table(file = localfile, data.frame("X"=(1:6), "Y"=rep(seq(1,7,3), 2)))
+iput(localfile, "Data_object_B")
+imeta_add("d", "Data_object_B", "Vignette demo file;TRUE;;")
+imeta_add("d", "Data_object_B", "File type;B;;")
+write(101:4333, localfile)
+iput(localfile, "Data_object_C")
+imeta_add("d", "Data_object_C", "Vignette demo file;TRUE;;")
+imeta_add("d", "Data_object_C", "File type;C;;")
+
+icd(paste0('/',zoneName))
+```
+
+### Moving around
+The `icd()` and `ipwd()` functions behave as expected. `icd()` returns the current path. When changing directories using relative paths or "~", this provides the absolute path directly without an additional call to `ipwd()`.
+```{r, results='asis'}
+# Where am I?
+ipwd()
+
+# Go to home collection
+icd("~")
+
+# Go to demo collection
+icd(demoDir)
+```
+
+Attempting to change to a non-existent collection raises an error:
+```{r, results='asis', error=TRUE}
+icd("/Collection/does/not/exist/so/raise/error")
+```
+
+## Listing Contents
+
+The `ils()` function returns a data.frame:
+
+```{r, results='asis'}
+listing <- ils()
+class(listing)
+View(listing)
+
+# Slice and dice
+View(listing[listing$Data_type=="d",c("Collection_name","Data_name","Data_size")])
+```
+
+## Metadata
+The `imeta` icommand has been implemented as a series of `imeta_xx()` functions. Where input or output is metadata, a standardized data frame with Vectors `Attribute`, `Value` and `Unit` is used.
+```{r, results='asis'}
+# Show metadata.
+View(imeta_ls(type = 'd', name = "Data_object_A"))
+
+# Add metadata using iput syntax string (limited to a single AVU)
+imeta_add(type = 'd', name = "Data_object_A", avu = "attribute;value;Unit;")
+View(imeta_ls(type = 'd', name = "Data_object_A"))
+
+# Add metadata using data.frame (multiple AVUs)
+new_metadata <- data.frame("Attribute" = c('x', 'y', 'z'), "Value" = c( 'X', 'Y', 'Z'))
+View(new_metadata)
+imeta_add(type = 'd', name = "Data_object_A", avu = new_metadata)
+View(imeta_ls(type = 'd', name = "Data_object_A"))
+
+# isearch, a simplified metadata query
+search_constraints = data.frame("Attribute" = c('Vignette demo file'),
+                                "Value" = c('TRUE'))
+View(search_constraints)
+View(isearch(constraints = search_constraints))
+```
+
+Instead of `iquest`, a simplified metadata search function is available. This allows searching by metadata fields only. It returns the exact same data.frame as the `ils()` function.
+
+```{r, results='asis'}
+# Searching with multiple constraints including constraints with a list of possible values
+search_constraints = data.frame("Attribute" = c('Vignette demo file', 'File type'),
+                                "Value" = c('TRUE', "A','C"))
+
+View(search_constraints)
+View(isearch(constraints = search_constraints))
+```
+
+## Accessing data
+The current implementation of `iget()` creates a local copy in the temporary space of the R session and returns its path.
+```{r, results='asis'}
+irodsfile <- iget('Data_object_A')
+print(irodsfile)
+```
+
+This allows the `iget()` function to be used directly inside reader functions.
+```{r, results='asis'}
+dataset <- read.table(iget('Data_object_B', force = TRUE))
+```
+
+The `iput()` function requires a local file to be created first. Metadata can be defined during atomic `iput()` as per iRODS 4.1.x.
+```{r, results='asis'}
+# Get metadata for input file
+metadata <- imeta_ls('d', 'Data_object_B')
+
+# Create output file
+plotfile <- tempfile()
+png(filename = plotfile)
+plot(dataset)
+dev.off()
+
+# Adjust metadata for output file
+metadata[metadata$Attribute == "File type",]$Value <- "B - Plot"
+
+# iput file with metadata
+iput(src_path = plotfile, dest_path = "Plot B.png", metadata = metadata)
+
+View(imeta_ls('d', "Plot B.png"))
+```
+
+## Customization options
+It is trivial to create a customized library on top of `rirods` to implement functionality specific to your site.
+The following code is an example of an iput function with one mandatory named argument `file_type` for a predefined metadata field `File type`.
+Furthermore, the example demonstrates how certain parameters such as `calculate_checksum=TRUE` or `acl = ""` can be removed from the user's control.
+
+```{r, eval = FALSE}
+iput <- function(src_path, dest_path, file_type, force = FALSE, progress = FALSE, verbose = FALSE){
+  metadata <- data.frame("Attribute" = c("File type"), "Value" = c(file_type))
+  metadata <- na.omit(metadata)
+  return (rirods::iput(src_path,
+                       dest_path,
+                       data_type = "",
+                       force = force,
+                       calculate_checksum = TRUE,
+                       checksum = TRUE,
+                       progress = progress,
+                       verbose = verbose,
+                       metadata = metadata,
+                       acl = ""))
+}
+```
+
+
+```{r,echo=FALSE, results='hide', }
+## Clean up in iRODS
+irm(demoDir, force = TRUE, recursive = TRUE)
+```

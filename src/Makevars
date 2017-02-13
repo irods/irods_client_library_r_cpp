@@ -1,0 +1,24 @@
+PKG_CPPFLAGS= -I/usr/include/irods \
+              -I/usr/include/irods/boost \
+              -I/usr/include/irods/iRODS/lib/api/include \
+              -I/usr/include/irods/iRODS/lib/core/include \
+              -I/usr/include/irods/iRODS/server/core/include \
+              -I/usr/include/irods/iRODS/server/icat/include \
+              -I/usr/include/irods/jansson/src \
+              -I/usr/include \
+              -I./
+PKG_CXXFLAGS+=-g -O0 -Wall -DSTRICT_R_HEADERS -DBOOST_SYSTEM_NO_DEPRECATED \
+              -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE \
+              -Dlinux_platform -DTAR_STRUCT_FILE -DGNU_TAR
+PKG_LIBS+= -L/usr/lib \
+           -L/usr/lib/irods \
+           -L/usr/lib/irods/externals \
+           -L/usr/lib/x86_64-linux-gnu \
+           /usr/lib/libRodsAPIs.a \
+           -lirods_client -lirods_client_core -lirods_client_api \
+           -lirods_client_api_table -lirods_client_plugins \
+           -ljansson \
+           -lboost_thread -lboost_filesystem -lboost_chrono -lboost_system -lboost_regex -lboost_date_time \
+           -lboost_program_options\
+           -lboost_iostreams \
+           -lz -lssl -lcrypto -ldl -lpthread -lm -lrt -lstdc++ -rdynamic

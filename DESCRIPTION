@@ -1,0 +1,14 @@
+Package: rirods
+Type: Package
+Title: The rirods package enables access to file objects in the iRODS data broker system from R
+Version: 1.0
+Date: 2015-12-14
+Author: Radovan Chytracek, Bernhard Sonderegger, Richard Cote
+Maintainer: Radovan Chytracek <radovan.chytracek@rd.nestle.com>
+Description: The irods package provides a set of R functions modeled after iRODS the icommands tools
+             to allow file (data object) manipultation, storage and retrieval as well as searching.
+License: BSD_3_clause
+Imports: Rcpp (>= 0.12.2)
+LinkingTo: Rcpp
+Suggests: knitr,rmarkdown
+VignetteBuilder: knitr
