@@ -91,9 +91,9 @@ Rcpp::DataFrame isearch(Rcpp::DataFrame constraints){
         }
         Rprintf("Constraint: \"WHERE META_DATA_ATTR_NAME %s AND META_DATA_ATTR_VALUE %s\"\n", attributes.str().c_str(), values.str().c_str());
 
-        snprintf( condStr, MAX_NAME_LEN, attributes.str().c_str());
+        snprintf( condStr, MAX_NAME_LEN, "%s", attributes.str().c_str());
         addInxVal( &genQueryInp.sqlCondInp, COL_META_DATA_ATTR_NAME, condStr );
-        snprintf( condStr, MAX_NAME_LEN, values.str().c_str() );
+        snprintf( condStr, MAX_NAME_LEN, "%s", values.str().c_str() );
         addInxVal( &genQueryInp.sqlCondInp, COL_META_DATA_ATTR_VALUE, condStr );
     }
 
