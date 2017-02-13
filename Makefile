@@ -36,5 +36,10 @@ all: vignette r_cmd_build r_cmd_pkg
 clean:
 	rm -f *.zip
 	rm -f *.tar.gz
+	rm -f R/RcppExports.R
 	rm -f src/*.o
 	rm -f src/*.so
+	rm -f src/RcppExports.cpp
+	rm -f vignettes/.build.timestamp
+	rm -f vignettes/rirods__Getting_R_to_talk_to_iRODS.R
+	rm -f vignettes/rirods__Getting_R_to_talk_to_iRODS.md
