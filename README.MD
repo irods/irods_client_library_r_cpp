@@ -6,8 +6,10 @@ The `rirods` package has been engineered to have semantics equivalent to the iCo
 
 It was initially developed at the Nestle Institute of Health Sciences by Radovan Chytrachek, Richard Cote, and Bernhard Sonderegger; based heavily on iCommands code.
 
+`rirods` is currently supported for use with iRODS 4.1.x.  Support for iRODS 4.2+ is forthcoming.
+
 ## Installation
 ### Prerequisites are:
-`yum install irods-dev irods-runtime gcc gcc-c++`
+`irods-dev irods-runtime gcc gcc-c++`
 ### Installing the R package
 `install.packages('./rirods_1.0.tar.gz', repos = NULL, type="source")`
