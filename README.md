@@ -4,7 +4,7 @@
 
 The `rirods` package has been engineered to have semantics equivalent to the iCommands and can easily be used as a basis for further customization.
 
-It was initially developed at the Nestle Institute of Health Sciences by Radovan Chytrachek, Richard Cote, and Bernhard Sonderegger; based heavily on iCommands code.
+It was initially developed at the Nestle Institute of Health Sciences by Radovan Chytracek, Richard Cote, and Bernhard Sonderegger; based heavily on iCommands code.
 
 `rirods` is currently supported for use with iRODS 4.1.x.
 
