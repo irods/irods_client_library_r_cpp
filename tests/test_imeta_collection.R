@@ -95,7 +95,7 @@ counters <- check(name = "imeta_ls(<collection>, <data.frame>) after rm - output
 
 # imeta_add(<string>)
 avu_addition = "T;L;I;"
-expected_avus_add <- rbind(expected_avus, data.frame(Attribute="T", Value="L", Unit="I"), stringsAsFactors = FALSE)
+expected_avus_add <- rbind(expected_avus, data.frame(Attribute="T", Value="L", Unit="I", stringsAsFactors = FALSE))
 
 counters <- check_no_exception(name = "imeta_add(<collection>, <string>) after add - no exception",
                                expression = "imeta_add('C', '/tempZone/UNIT_TESTING/EmptyCollection', avu_addition)",
