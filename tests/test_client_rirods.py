@@ -36,10 +36,13 @@ class Test_Client_rirods(unittest.TestCase):
 
 def create_test(r_test_script):
     def test(self):
+        subprocess.call(['irule', "writeLine('serverLog','=======[ BEGIN ]=====[ {0} ]')".format(r_test_script), 'null','null'])
         with open(r_test_script) as rscript:
             proc = subprocess.Popen(["R",  "--no-save", "--slave", "-q"], stdin=rscript, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (out, err) = proc.communicate()
-        self.assertEqual(0, proc.returncode, '{0} issues\nout[{1}]\nstderr[{2}]'.format(proc.returncode, out, err))
+        print(out)
+        self.assertEqual(0, proc.returncode, '{0} issues\nstdout[{1}]\nstderr[{2}]'.format(proc.returncode, out, err))
+        subprocess.call(['irule', "writeLine('serverLog','=========[ END ]=====[ {0} ]')".format(r_test_script), 'null','null'])
     return test
 
 for r_test_script in glob.glob(os.path.dirname(os.path.realpath(__file__)) + "/test*.R"):
