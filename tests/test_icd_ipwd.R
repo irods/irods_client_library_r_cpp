@@ -70,11 +70,11 @@ counters <- check(name = "ipwd() - Tilde",
       message = paste("Has not returned the correct directory. Returned: \"", pwd_collection, "\", expecting \"", collection, "\"")
 )
 
-# Non-existant collection
-counters <- check_exception(name = "icd() - Exception on non-existant directory",
+# Non-existent collection
+counters <- check_exception(name = "icd() - Exception on non-existent directory",
                 expression = "icd('/Nozone/a/b/c')",
                 counter = counters,
-                message = "Has not raised an error when called with non-existant collection."
+                message = "Has not raised an error when called with non-existent collection."
                 )
 
 report_tests_and_exit(counters)

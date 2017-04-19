@@ -37,9 +37,9 @@ counters <- check(name = "imeta_ls(<collection>) output",
                   message = "Output does not correspond to expectation from fixtures"
 )
 
-# imeta_ls(<non-existant>)
+# imeta_ls(<non-existent>)
 counters <- check_exception(name = "imeta_ls(<collection>) no exception",
-                            expression = "avus <- imeta_ls('C', '/tempZone/UNIT_TESTING/NonExistantCollection')",
+                            expression = "avus <- imeta_ls('C', '/tempZone/UNIT_TESTING/NonExistentCollection')",
                             counter = counters,
                             message = "This should raise an exception"
 )

@@ -60,8 +60,8 @@ counters <- check_exception(name = "ils() after irm(<data object>)",
 )
 
 
-# Attempt to remove non-existant object
-counters <- check_exception(name = "irm(<non-existant>)",
+# Attempt to remove non-existent object
+counters <- check_exception(name = "irm(<non-existent>)",
                             expression = "irm(\"/Nozone/a/b/c\")",
                             counter = counters,
                             message = "Should raise error")

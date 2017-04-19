@@ -84,8 +84,8 @@ counters <- check(name = "ils(<relative path>)",
 
 # Currently no test for ils("~") as we have no fixtures there
 
-# non-existant collection
-counters <- check_exception(name = "ils(<non-existant>)",
+# non-existent collection
+counters <- check_exception(name = "ils(<non-existent>)",
                             expression = "ils(/tempZone/UNIT_TESTING/banana)",
                             counter = counters,
                             message = "Should raise error"

@@ -37,9 +37,9 @@ counters <- check(name = "imeta_ls(<data object>) output",
                   message = "Output does not correspond to expectation from fixtures"
 )
 
-# imeta_ls(<non-existant>)
+# imeta_ls(<non-existent>)
 counters <- check_exception(name = "imeta_ls(<data object>) no exception",
-                            expression = "avus <- imeta_ls('d', '/tempZone/UNIT_TESTING/NonExistantDataObject')",
+                            expression = "avus <- imeta_ls('d', '/tempZone/UNIT_TESTING/NonExistentDataObject')",
                             counter = counters,
                             message = "This should raise an exception"
 )
