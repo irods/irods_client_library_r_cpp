@@ -63,7 +63,7 @@ zoneName
 
 ```{r,echo=FALSE, results='hide'}
 ## Set some stuff up in iRODS
-demoDir = paste("", zoneName, "DemoCollection", sep = "/")
+demoDir = paste("", zoneName, "home/public/r_irods_test", sep = "/")
 
 
 ## Check if 
