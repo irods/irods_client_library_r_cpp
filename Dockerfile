@@ -13,7 +13,7 @@ RUN wget -qO - https://packages.irods.org/irods-signing-key.asc | sudo apt-key a
 
 # install build prerequisites
 RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y r-base-core irods-dev irods-runtime irods-externals-clang6.0.0
-RUN apt-get install -y libkrb5-dev irods-externals-jansson2.7-0
+RUN apt-get install -y pandoc libkrb5-dev irods-externals-jansson2.7-0
 
 # prepare R environment
 RUN mkdir /root/.R && \
