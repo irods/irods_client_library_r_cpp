@@ -13,7 +13,7 @@ RUN wget -qO - https://packages.irods.org/irods-signing-key.asc | sudo apt-key a
 
 # install build prerequisites
 RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y r-base-core irods-dev irods-runtime irods-externals-clang6.0.0
-RUN apt-get install -y libkrb5-dev libjansson-dev
+RUN apt-get install -y libkrb5-dev irods-externals-jansson2.7-0
 
 # prepare R environment
 RUN mkdir /root/.R && \
@@ -22,10 +22,10 @@ RUN mkdir /root/.R && \
 
 # install R prerequisites
 COPY ./ /rirods-source
-RUN R CMD BATCH /rirods-source/install-Rcpp.R
+RUN R CMD BATCH /rirods-source/install-prerequisites.R
 
 # build rirods
-#RUN make r_cmd_build
+#RUN cd /rirods-source && make r_cmd_build
 
 # leave this container running for development purposes
 CMD tail -f /dev/null
