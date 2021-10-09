@@ -9,3 +9,6 @@
 ^README$
 ^README\.md$
 ^LICENSE$
+^install-prerequisites\.R$
+^\.Rhistory$
+^Dockerfile$
