@@ -1,5 +1,4 @@
 #include <R.h>
-#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
 #include "irods_client_api_table.hpp"

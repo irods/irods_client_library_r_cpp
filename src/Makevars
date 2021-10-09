@@ -1,24 +1,30 @@
 PKG_CPPFLAGS= -I/usr/include/irods \
-              -I/usr/include/irods/boost \
-              -I/usr/include/irods/iRODS/lib/api/include \
-              -I/usr/include/irods/iRODS/lib/core/include \
-              -I/usr/include/irods/iRODS/server/core/include \
-              -I/usr/include/irods/iRODS/server/icat/include \
-              -I/usr/include/irods/jansson/src \
+              -I/opt/irods-externals/clang6.0-0/include/c++/v1 \
+              -I/opt/irods-externals/boost1.67.0-0/include \
+              -I/opt/irods-externals/fmt6.1.2-1/include \
+              -I/opt/irods-externals/jansson2.7-0/include \
+              -I/opt/irods-externals/json3.7.3-0/include \
+              -I/usr/include/irods/plugins/api/include \
               -I/usr/include \
               -I./
-PKG_CXXFLAGS+=-g -O0 -Wall -DSTRICT_R_HEADERS -DBOOST_SYSTEM_NO_DEPRECATED \
+PKG_CXXFLAGS+=-std=c++17 -stdlib=libc++ -g -O0 -Wall -DSTRICT_R_HEADERS -DBOOST_SYSTEM_NO_DEPRECATED \
               -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE \
               -Dlinux_platform -DTAR_STRUCT_FILE -DGNU_TAR
 PKG_LIBS+= -L/usr/lib \
-           -L/usr/lib/irods \
-           -L/usr/lib/irods/externals \
+           -L/usr/lib/irods/plugins/api \
            -L/usr/lib/x86_64-linux-gnu \
-           /usr/lib/libRodsAPIs.a \
-           -lirods_client -lirods_client_core -lirods_client_api \
-           -lirods_client_api_table -lirods_client_plugins \
-           -ljansson \
-           -lboost_thread -lboost_filesystem -lboost_chrono -lboost_system -lboost_regex -lboost_date_time \
-           -lboost_program_options\
-           -lboost_iostreams \
+           -L/opt/irods-externals/boost1.67.0-0/lib \
+           -L/opt/irods-externals/jansson2.7-0/lib \
+           -lirods_client -lirods_common -lirods_plugin_dependencies \
+           -Wl,-rpath,/opt/irods-externals/boost1.67.0-0/lib \
+           -Wl,-rpath,/opt/irods-externals/jansson2.7-0/lib \
+           /opt/irods-externals/jansson2.7-0/lib/libjansson.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_thread.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_filesystem.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_chrono.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_system.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_regex.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_date_time.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_program_options.so \
+           /opt/irods-externals/boost1.67.0-0/lib/libboost_iostreams.so \
            -lz -lssl -lcrypto -ldl -lpthread -lm -lrt -lstdc++ -rdynamic
