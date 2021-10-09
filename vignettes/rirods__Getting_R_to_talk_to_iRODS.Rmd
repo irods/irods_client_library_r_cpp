@@ -9,6 +9,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
+```
 ## Background
 The Integrated Rule-Oriented Data System ([iRODS](http://irods.org/)) is open source data management software for storing, searching, organizing, and sharing files and datasets that are large, important, and complex. Thousands of businesses, research centers, and government agencies worldwide use iRODS for flexible, policy-based management of files and metadata that span storage devices and locations.
 
