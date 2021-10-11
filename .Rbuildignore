@@ -12,3 +12,4 @@
 ^install-prerequisites\.R$
 ^\.Rhistory$
 ^Dockerfile$
+^log$

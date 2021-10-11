@@ -13,19 +13,20 @@ RUN wget -qO - https://packages.irods.org/irods-signing-key.asc | sudo apt-key a
 
 # install build prerequisites
 RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y r-base-core irods-dev irods-runtime irods-externals-clang6.0.0
-RUN apt-get install -y pandoc libkrb5-dev irods-externals-jansson2.7-0
+RUN apt-get install -y  libkrb5-dev irods-externals-jansson2.7-0
+
+# Package development: devtools and rmarkdown
+RUN apt-get install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev pandoc ghostscript qpdf
 
 # prepare R environment
 RUN mkdir /root/.R && \
-    echo "CC=/opt/irods-externals/clang6.0-0/bin/clang" >> /root/.R/Makevars && \
-    echo "CXX=/opt/irods-externals/clang6.0-0/bin/clang++" >> /root/.R/Makevars
+      echo "CC=/opt/irods-externals/clang6.0-0/bin/clang" >> /root/.R/Makevars && \
+      echo "CXX=/opt/irods-externals/clang6.0-0/bin/clang++" >> /root/.R/Makevars
 
 # install R prerequisites
-COPY ./ /rirods-source
-RUN R CMD BATCH /rirods-source/install-prerequisites.R
+COPY ./ /rirods
+RUN cd /rirods \
+      && R -e "install.packages(c('devtools', 'Rcpp', 'knitr', 'rmarkdown'), repos='http://cran.rstudio.com/')"
 
-# build rirods
-#RUN cd /rirods-source && make r_cmd_build
-
-# leave this container running for development purposes
-CMD tail -f /dev/null
+# use the package set dir to package
+ENTRYPOINT ["R", "-e", "setwd('rirods')"]
