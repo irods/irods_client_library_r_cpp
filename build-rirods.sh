@@ -4,12 +4,12 @@
 sudo docker image build --tag rirods:build .
 
 # local source and library paths
-SRCPATH=$(R -e "getwd()"| grep /)
+SRCPATH=$(pwd)
 LIBPATH=$(R -e ".libPaths()[1]" | grep /)
 
 # devtools document
 sudo docker container run --rm --name rirods-document \
-  -v $(SRCPATH):/rirods \
+  -v $SRCPATH:/rirods \
   rirods:build \
   -e 'devtools::document()'
 

@@ -8,7 +8,8 @@ Maintainer: Radovan Chytracek <radovan.chytracek@rd.nestle.com>
 Description: The irods package provides a set of R functions modeled after iRODS the icommands tools
              to allow file (data object) manipulation, storage and retrieval as well as searching.
 License: BSD_3_clause
-Imports: Rcpp (>= 0.12.2)
+Imports: 
+    Rcpp (>= 1.0.7)
 LinkingTo: Rcpp
 Suggests: knitr,rmarkdown
 VignetteBuilder: knitr

@@ -1,6 +1,7 @@
 #' r_ienv
 #' Shows current iRODS environment settings
 #'
+#' @export
 ienv <- function() {
   x <- .Call('rirods_ienv', PACKAGE = 'rirods')
   return(as.list(x))
@@ -10,6 +11,7 @@ ienv <- function() {
 #' Lists collections and data objects in iRODS
 #' @param args "ils" one or several iRODS data-object (file) or collection (directory) paths
 #' @return A data frame with information about collections and data objects under the supplied paths
+#' @export
 ils <- function(args="") {
   x <- .Call('rirods_ils', PACKAGE = 'rirods', args = args)
   x$Modify_time <- as.POSIXct(as.numeric(as.character(x$Modify_time)),origin="1970-01-01")
@@ -20,7 +22,7 @@ ils <- function(args="") {
 #' isearch
 #' Lists collections and data objects in iRODS
 #' @param args "isearch" icommand params
-#'
+#' @export
 isearch <- function(constraints) {
   x <- .Call('rirods_isearch', PACKAGE = 'rirods', constraints)
   x$Modify_time <- as.POSIXct(as.numeric(as.character(x$Modify_time)),origin="1970-01-01")
@@ -45,7 +47,7 @@ isearch <- function(constraints) {
 #' @param acl      atomically apply ACLs of the form",
 #'                 'perm user_or_group;perm user_or_group;'",
 #'                 where 'perm' is defined as null|read|write|own"
-#'
+#' @export
 iput <- function(src_path, dest_path, data_type = "", force = FALSE, calculate_checksum = FALSE, checksum = FALSE, progress = FALSE, verbose = FALSE, metadata = "", acl = "") {
 
     if(class(metadata)=="character"){
@@ -63,7 +65,7 @@ iput <- function(src_path, dest_path, data_type = "", force = FALSE, calculate_c
 #' @param checksum verify the checksum
 #' @param progress output the progress of the download
 #' @param verbose verbose
-#'
+#' @export
 iget <- function(src_path, dest_path=tempdir(), force = FALSE, checksum = FALSE, progress = FALSE, verbose = FALSE) {
   .Call('rirods_iget', PACKAGE = 'rirods', src_path, dest_path, force, checksum, progress, verbose)
 }
@@ -73,7 +75,7 @@ iget <- function(src_path, dest_path=tempdir(), force = FALSE, checksum = FALSE,
 #' @param type iRODS files[dD], collections[cC], resources[rR], users[u]
 #' @param name iRODS object name - should be always present
 #' @param avu format is a data frame with "Attribute", "Value", ("Unit") OR a string of the format "Attribute;Value;Unit;..."
-#'
+#' @export
 imeta_add <- function(type, name, avu) {
   if(class(avu)=="character"){
     .Call('rirods_imeta_add', PACKAGE = 'rirods', type, name, avu)
@@ -89,7 +91,7 @@ imeta_add <- function(type, name, avu) {
 #' @param type iRODS files[dD], collections[cC], resources[rR], users[u]
 #' @param name iRODS object name - should be always present, one can use wildcards %, _ on object name
 #' @param avu format is a data frame with "Attribute", "Value", ("Unit") OR a string of the format "Attribute;Value;Unit"
-#'
+#' @export
 imeta_addw <- function(type, name, avu) {
   if(class(avu)=="character"){
     .Call('rirods_imeta_addw', PACKAGE = 'rirods', type, name, avu)
@@ -103,7 +105,7 @@ imeta_addw <- function(type, name, avu) {
 #' @param type iRODS files[dD], collections[cC], resources[rR], users[u]
 #' @param name iRODS object name - should be always present
 #' @param avu  format "Attribute;Value;Unit", unit must be present if exists (iRODS constraint)
-#'
+#' @export
 imeta_rm <- function(type, name, avu) {
   if(class(avu)=="character"){
     .Call('rirods_imeta_rm', PACKAGE = 'rirods', type, name, avu)
@@ -113,3 +115,4 @@ imeta_rm <- function(type, name, avu) {
     }
   }
 }
+

@@ -3,8 +3,6 @@
 ^install-packages\.R$
 ^install-Rcpp\.R$
 ^Makefile$
-^R/RcppExportsManual\.R$
-^src/RcppExportsManual\.cpp$
 ^src/R_init_rods\.cpp$
 ^README$
 ^README\.md$
