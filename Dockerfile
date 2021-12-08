@@ -26,5 +26,8 @@ RUN cd /home/rstudio/rirods
 RUN /rocker_scripts/install_tidyverse.sh
 RUN /rocker_scripts/install_pandoc.sh
 
-# use the package set dir to package
+# open R project at start-up and load devtools (https://community.rstudio.com/t/how-to-set-the-default-startup-project-in-rocker-tidyverse/63092)
+RUN echo "setHook('rstudio.sessionInit', function(newSession) {if (newSession && is.null(rstudioapi::getActiveProject())) rstudioapi::openProject('/home/rstudio/rirods/rirods.Rproj')}, action = 'append')" > /home/rstudio/.Rprofile && \
+    echo "if (interactive()) {suppressMessages(require(devtools))}" >> /home/rstudio/.Rprofile
+
 CMD ["/init"]
