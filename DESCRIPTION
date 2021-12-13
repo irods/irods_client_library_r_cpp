@@ -9,9 +9,9 @@ Description: The irods package provides a set of R functions modeled after iRODS
              to allow file (data object) manipulation, storage and retrieval as well as searching.
 License: BSD_3_clause
 Imports: 
-    Rcpp (>= 1.0.7)
+    Rcpp
 LinkingTo: Rcpp
 Suggests: knitr,rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8

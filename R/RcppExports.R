@@ -6,7 +6,7 @@
 #' @param rods_path The iRODS destination path to cd into
 #'
 icd <- function(rods_path = "", verbose = FALSE) {
-    .Call('_rirods_icd', PACKAGE = 'rirods', rods_path, verbose)
+    .Call(`_rirods_icd`, rods_path, verbose)
 }
 
 #' icp
@@ -21,7 +21,7 @@ icd <- function(rods_path = "", verbose = FALSE) {
 #' @param verbose verbose
 #'
 icp <- function(src_path, dest_path, force = FALSE, calculate_checksum = FALSE, checksum = FALSE, progress = FALSE, verbose = FALSE) {
-    .Call('_rirods_icp', PACKAGE = 'rirods', src_path, dest_path, force, calculate_checksum, checksum, progress, verbose)
+    .Call(`_rirods_icp`, src_path, dest_path, force, calculate_checksum, checksum, progress, verbose)
 }
 
 #' r_iexit
@@ -29,7 +29,7 @@ icp <- function(src_path, dest_path, force = FALSE, calculate_checksum = FALSE, 
 #' @param full Optional parameter 'full' will terminate the iRODS session, default "FALSE"
 #'
 iexit <- function(full = FALSE) {
-    invisible(.Call('_rirods_iexit', PACKAGE = 'rirods', full))
+    invisible(.Call(`_rirods_iexit`, full))
 }
 
 #' r_iinit
@@ -38,7 +38,7 @@ iexit <- function(full = FALSE) {
 #' @param p Secret password to be passed from R session
 #'
 iinit <- function(pass) {
-    .Call('_rirods_iinit', PACKAGE = 'rirods', pass)
+    .Call(`_rirods_iinit`, pass)
 }
 
 #' imeta
@@ -84,7 +84,7 @@ NULL
 #' @param avu  format "Attribute;Value;Unit", one can use wildcards %, _ on attribute, value, unit
 #'
 imeta_rmw <- function(type, name, avu) {
-    .Call('_rirods_imeta_rmw', PACKAGE = 'rirods', type, name, avu)
+    .Call(`_rirods_imeta_rmw`, type, name, avu)
 }
 
 #' imeta_cp
@@ -95,7 +95,7 @@ imeta_rmw <- function(type, name, avu) {
 #' @param dst_name iRODS destination object name - should be always present
 #'
 imeta_cp <- function(src_type, dst_type, src_name, dst_name) {
-    .Call('_rirods_imeta_cp', PACKAGE = 'rirods', src_type, dst_type, src_name, dst_name)
+    .Call(`_rirods_imeta_cp`, src_type, dst_type, src_name, dst_name)
 }
 
 #' imeta_mod
@@ -106,7 +106,7 @@ imeta_cp <- function(src_type, dst_type, src_name, dst_name) {
 #' @param new_avu  format "Attribute;Value;Unit", e.g. "AttrNew;12;" or "AttrNew;12;mm"
 #'
 imeta_mod <- function(src_type, src_name, old_avu, new_avu) {
-    .Call('_rirods_imeta_mod', PACKAGE = 'rirods', src_type, src_name, old_avu, new_avu)
+    .Call(`_rirods_imeta_mod`, src_type, src_name, old_avu, new_avu)
 }
 
 #' imeta_set
@@ -127,7 +127,7 @@ imeta_mod <- function(src_type, src_name, old_avu, new_avu) {
 #' @param avu  format "Attribute;Value;Unit"
 #'
 imeta_set <- function(type, name, avu) {
-    .Call('_rirods_imeta_set', PACKAGE = 'rirods', type, name, avu)
+    .Call(`_rirods_imeta_set`, type, name, avu)
 }
 
 #' imeta_list
@@ -180,7 +180,7 @@ NULL
 #' @param query    Query string expression on AVUs
 #'
 imeta_qu <- function(src_type, query) {
-    .Call('_rirods_imeta_qu', PACKAGE = 'rirods', src_type, query)
+    .Call(`_rirods_imeta_qu`, src_type, query)
 }
 
 #' imeta_ls
@@ -198,7 +198,7 @@ imeta_qu <- function(src_type, query) {
 #' @param attribute limit listing to values for a single attribute name defined by attr, blank for all
 #'
 imeta_ls <- function(type, name, attribute = "") {
-    .Call('_rirods_imeta_ls', PACKAGE = 'rirods', type, name, attribute)
+    .Call(`_rirods_imeta_ls`, type, name, attribute)
 }
 
 #' imeta_lsw
@@ -218,7 +218,7 @@ imeta_ls <- function(type, name, attribute = "") {
 #' @param avu  format "Attribute", using wildcards '%' and '_'
 #'
 imeta_lsw <- function(type, name, avu) {
-    .Call('_rirods_imeta_lsw', PACKAGE = 'rirods', type, name, avu)
+    .Call(`_rirods_imeta_lsw`, type, name, avu)
 }
 
 #' imkdir
@@ -227,7 +227,7 @@ imeta_lsw <- function(type, name, avu) {
 #' @param parents   Create automatically all required parent directories
 #'
 imkdir <- function(rods_path = "", parents = FALSE) {
-    .Call('_rirods_imkdir', PACKAGE = 'rirods', rods_path, parents)
+    .Call(`_rirods_imkdir`, rods_path, parents)
 }
 
 #' imv
@@ -253,14 +253,14 @@ imkdir <- function(rods_path = "", parents = FALSE) {
 #' @param verbose verbose
 #'
 imv <- function(src_path, dest_path, verbose = FALSE) {
-    .Call('_rirods_imv', PACKAGE = 'rirods', src_path, dest_path, verbose)
+    .Call(`_rirods_imv`, src_path, dest_path, verbose)
 }
 
 #' ipwd
 #' Returns the current working directory in iRODS or empty string if error
 #'
 ipwd <- function() {
-    .Call('_rirods_ipwd', PACKAGE = 'rirods')
+    .Call(`_rirods_ipwd`)
 }
 
 #' imkdir
@@ -271,6 +271,6 @@ ipwd <- function() {
 #' @param force     Skip trash bin, directly delete the iRODS object(s)
 #'
 irm <- function(rods_path = "", recursive = FALSE, verbose = FALSE, force = FALSE) {
-    .Call('_rirods_irm', PACKAGE = 'rirods', rods_path, recursive, verbose, force)
+    .Call(`_rirods_irm`, rods_path, recursive, verbose, force)
 }
 

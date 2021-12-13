@@ -16,8 +16,8 @@ RUN apt-get install -y  libkrb5-dev irods-externals-jansson2.7-0
 
 # prepare R environment
 RUN mkdir /root/.R && \
-      echo "CC=/opt/irods-externals/clang6.0-0/bin/clang" >> /root/.R/Makevars && \
-      echo "CXX=/opt/irods-externals/clang6.0-0/bin/clang++" >> /root/.R/Makevars
+      echo "CC=/opt/irods-externals/clang6.0-0/bin/clang" >> /home/rstudio/.R/Makevars && \
+      echo "CXX=/opt/irods-externals/clang6.0-0/bin/clang++" >> /home/rstudio/.R/Makevars
 
 COPY ./ /home/rstudio/rirods
 RUN cd /home/rstudio/rirods
