@@ -3,8 +3,41 @@ Type: Package
 Title: The rirods package enables access to file objects in the iRODS data broker system from R
 Version: 1.0
 Date: 2015-12-14
-Author: Radovan Chytracek, Bernhard Sonderegger, Richard Cote
-Maintainer: Radovan Chytracek <radovan.chytracek@rd.nestle.com>
+Authors@R: c(
+  person(
+    given = "Radovan", 
+    family = "Chytracek", 
+    role = c("cre", "aut")
+    email = "radovan.chytracek@rd.nestle.com"
+    ),
+  person(
+    given = "Bernhard", 
+    family = "Sonderegger", 
+    role = c("cre", "aut")
+    ),
+  person(
+    given = "Richard", 
+    family = "Cote", 
+    role = c("cre", "aut")
+    ),
+  person(
+    given = c("Kory", "Dorrell"), 
+    family = "Draughn", 
+    role = "ctb"
+    ),
+  person(
+    given = "Terrell", 
+    family = "Russell", 
+    role = "ctb"
+    ),
+  person(
+    given = "Martin", 
+    family = "Schobben", 
+    email = "schobbenmartin@gmail.com",
+    role = "ctb",
+    comment = c(ORCID = "0000-0001-8560-0037")
+    )
+  )
 Description: The irods package provides a set of R functions modeled after iRODS the icommands tools
              to allow file (data object) manipulation, storage and retrieval as well as searching.
 License: BSD_3_clause
@@ -15,3 +48,8 @@ Suggests: knitr,rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
 Encoding: UTF-8
+SystemRequirements: To use rirods, a minimal installation of iRODS is required (
+  irods-dev and irods-runtime). In addition clang6.0.0 is needed for compilation
+  . Kerberos (libkrb5-dev) is needed for the authenticating of users and 
+  services on a network. And the Jansson C library (jansson2.7-0) for encoding, 
+  decoding and manipulating of JSON data.

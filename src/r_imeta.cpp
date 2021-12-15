@@ -1572,9 +1572,11 @@ int imeta_add (
 	return status;
 }
 
-//' imeta_addw
+//' Add new metadata
+//'
 //' Adds a new metadata AVU to the selected iRODS object of the given type
-//' @param type iRODS files[dD], collections[cC], resources[rR], users[u]
+//'
+//' @param type iRODS files (`dD`), collections (`cC`), resources (`rR`), users (`u`)
 //' @param name iRODS object name - should be always present, one can use wildcards %, _ on object name
 //' @param avu  format "Attribute;Value;Unit"
 //'

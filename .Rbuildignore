@@ -1,13 +1,6 @@
+^RcppExports\.cpp$
+^RcppExports\.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^install-packages\.R$
-^install-Rcpp\.R$
-^Makefile$
-^src/R_init_rods\.cpp$
-^README$
+^README\.Rmd$
 ^README\.md$
-^LICENSE$
-^install-prerequisites\.R$
-^\.Rhistory$
-^Dockerfile$
-^log$
