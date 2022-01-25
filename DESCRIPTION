@@ -7,18 +7,18 @@ Authors@R: c(
   person(
     given = "Radovan", 
     family = "Chytracek", 
-    role = c("cre", "aut")
+    role = c("cre", "aut"),
     email = "radovan.chytracek@rd.nestle.com"
     ),
   person(
     given = "Bernhard", 
     family = "Sonderegger", 
-    role = c("cre", "aut")
+    role = c("aut")
     ),
   person(
     given = "Richard", 
     family = "Cote", 
-    role = c("cre", "aut")
+    role = c("aut")
     ),
   person(
     given = c("Kory", "Dorrell"), 
