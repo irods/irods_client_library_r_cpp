@@ -36,7 +36,7 @@ You can install the development version of `rirods` from GitHub with
 ``` r
 # Install rirods from GitHub: 
 # install.packages("devtools")
-devtools::install_github("irods/rirods")
+devtools::install_github("irods/irods_client_library_r_cpp")
 ```
 
 ## System requirements
