@@ -30,7 +30,7 @@ std::map<std::string, std::string> ienv( ) {
   status = getRodsEnv( &myEnv );
 
   if ( status < 0 ) {
-    ::Rf_error("rirods exception (getRodsEnv error)");
+    Rf_error("rirods exception (getRodsEnv error)");
   }
 
   returnEnv["Release Version"] = RODS_REL_VERSION;

@@ -44,7 +44,7 @@ r_get_iCommandProgStat( operProgress_t *operProgress ) {
     }
     else if ( ( status = splitPathByKey( operProgress->curFileName,
                                          myDir, MAX_NAME_LEN, myFile, MAX_NAME_LEN, '/' ) ) < 0 ) {
-        ::Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
+        Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
                   operProgress->curFileName, status );
         return NULL;
     }
@@ -121,15 +121,15 @@ std::string iget( std::string src_path
     rodsEnv myEnv;
     status = getRodsEnv( &myEnv );
     if ( status < 0 ) {
-      ::Rf_error("Error iget: getRodsEnv error %d ", status );
+      Rf_error("Error iget: getRodsEnv error %d ", status );
     }
 
     if(src_path.empty()) {
-      ::Rf_error("Error iget: srcPath is empty!" );
+      Rf_error("Error iget: srcPath is empty!" );
     }
 
     if(dest_path.empty()) {
-      ::Rf_error("Error iget: destPath is empty!" );
+      Rf_error("Error iget: destPath is empty!" );
     }
 
     if( force )
@@ -152,7 +152,7 @@ std::string iget( std::string src_path
     status = addSrcInPath((rodsPathInp_t*)(rodsPathInp.get()), src_path.c_str());
     status = parseRodsPath( &(rodsPathInp->srcPath[0]), &myEnv );
     if( status < 0 ) {
-      ::Rf_error("rods Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp->srcPath[0]);
+      Rf_error("rods Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp->srcPath[0]);
     }
 
     // Validate dest_path user input
@@ -166,7 +166,7 @@ std::string iget( std::string src_path
 
 	  status = parseLocalPath( rodsPathInp->destPath );
     if( status < 0 ) {
-      ::Rf_error("rods Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp->destPath->inPath);
+      Rf_error("rods Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp->destPath->inPath);
     }
 
     if ( myRodsArgs.reconnect == True ) {
@@ -180,14 +180,14 @@ std::string iget( std::string src_path
                       myEnv.rodsZone, reconnFlag, &errMsg );
 
     if ( conn == NULL ) {
-      ::Rf_error("iget: Connection error");
+      Rf_error("iget: Connection error");
     }
 
     if ( strcmp( myEnv.rodsUserName, PUBLIC_USER_NAME ) != 0 ) {
         status = clientLogin( conn );
         if ( status != 0 ) {
             rcDisconnect( conn );
-          ::Rf_error("iget: Authentication error");
+          Rf_error("iget: Authentication error");
         }
     }
 
@@ -203,7 +203,7 @@ std::string iget( std::string src_path
     if ( status < 0 ) {
       free(rodsPathInp->destPath);
       printErrorStack( conn->rError );
-      ::Rf_error( "iget: Error %d", status );
+      Rf_error( "iget: Error %d", status );
     }
     else {
       std::string destination_path(rodsPathInp->destPath->outPath);

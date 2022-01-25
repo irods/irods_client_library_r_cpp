@@ -70,13 +70,13 @@ std::string icd( std::string rods_path="", bool verbose=false)
     /* Connect and check that the path exists */
     Conn = rcConnect( myEnv.rodsHost, myEnv.rodsPort, myEnv.rodsUserName, myEnv.rodsZone, 0, &errMsg );
     if ( Conn == NULL ) {
-      ::Rf_error( "ils: Connection error");
+      Rf_error( "ils: Connection error");
     }
 
     status = clientLogin( Conn );
     if ( status != 0 ) {
       rcDisconnect( Conn );
-      ::Rf_error( "ils: Connection error %d", status);
+      Rf_error( "ils: Connection error %d", status);
     }
 
     status = getRodsObjType( Conn, &rodsPath );
@@ -84,17 +84,17 @@ std::string icd( std::string rods_path="", bool verbose=false)
     rcDisconnect( Conn );
 
     if ( status < 0 ) {
-      ::Rf_error( "[icd] Error %d getting type", status );
+      Rf_error( "[icd] Error %d getting type", status );
     }
 
     if ( rodsPath.objType != COLL_OBJ_T || rodsPath.objState != EXIST_ST ) {
-      ::Rf_error( "[icd] No such directory (collection): %s\n", rodsPath.outPath );
+      Rf_error( "[icd] No such directory (collection): %s\n", rodsPath.outPath );
     }
 
 
     /* open the sessionfile and write or update it */
     if ( ( fd = open( envFile, O_CREAT | O_RDWR | O_TRUNC, 0644 ) ) < 0 ) {
-      ::Rf_error( "[icd] Unable to open envFile %s\n", envFile );
+      Rf_error( "[icd] Unable to open envFile %s\n", envFile );
     }
 
     snprintf( buffer, sizeof( buffer ), "{\n\"irods_cwd\": \"%s\"\n}\n", rodsPath.outPath );
@@ -102,7 +102,7 @@ std::string icd( std::string rods_path="", bool verbose=false)
     i = write( fd, buffer, len );
     close( fd );
     if ( i != len ) {
-      ::Rf_error( "[icd] Unable to write envFile %s\n", envFile );
+      Rf_error( "[icd] Unable to write envFile %s\n", envFile );
     }
 
     // iRODS environment has been updated so we need to reload for the other functions called later

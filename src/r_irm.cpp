@@ -36,7 +36,7 @@ int r_rmUtil( rcComm_t *conn, rodsArguments_t *myRodsArgs,
         if ( rodsPathInp->srcPath[i].objType == UNKNOWN_OBJ_T ) {
             getRodsObjType( conn, &rodsPathInp->srcPath[i] );
             if ( rodsPathInp->srcPath[i].objState == NOT_EXIST_ST ) {
-                ::Rf_error("[irm] r_rmUtil: srcPath '%s' does not exist.",
+                Rf_error("[irm] r_rmUtil: srcPath '%s' does not exist.",
                            rodsPathInp->srcPath[i].outPath );
                 savedStatus = USER_INPUT_PATH_ERR;
                 continue;
@@ -62,7 +62,7 @@ int r_rmUtil( rcComm_t *conn, rodsArguments_t *myRodsArgs,
         /* XXXX may need to return a global status */
         if ( status < 0 &&
                 status != CAT_NO_ROWS_FOUND ) {
-          ::Rf_error("[irm] r_rmUtil: rm error for %s, status = %d",
+          Rf_error("[irm] r_rmUtil: rm error for %s, status = %d",
                      rodsPathInp->srcPath[i].outPath, status );
             savedStatus = status;
         }
@@ -99,7 +99,7 @@ int irm( std::string rods_path="", bool recursive=false, bool verbose=false, boo
 
     if ( rods_path.empty() )
     {
-        ::Rf_error( "[irm] no rods_path input\n" );
+        Rf_error( "[irm] no rods_path input\n" );
         return( 2 );
     }
     if(verbose)
@@ -112,7 +112,7 @@ int irm( std::string rods_path="", bool recursive=false, bool verbose=false, boo
     status = getRodsEnv( &myEnv );
 
     if ( status < 0 ) {
-    	::Rf_error( "[irm] getRodsEnv error %d. ", status );
+    	Rf_error( "[irm] getRodsEnv error %d. ", status );
         return( 1 );
     }
 
@@ -136,7 +136,7 @@ int irm( std::string rods_path="", bool recursive=false, bool verbose=false, boo
     status = addSrcInPath((rodsPathInp_t*)(&rodsPathInp), rods_path.c_str());
     status = parseRodsPath( &(rodsPathInp.srcPath[0]), &myEnv );
     if( status < 0 ) {
-    	::Rf_error("[irm] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
+    	Rf_error("[irm] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
     	return status;
     }
 
@@ -146,7 +146,7 @@ int irm( std::string rods_path="", bool recursive=false, bool verbose=false, boo
     rcDisconnect( conn );
 
     if ( ( USER_SOCK_CONNECT_ERR - 1000 ) < status && status <= USER_SOCK_CONNECT_ERR ) {
-        ::Rf_error( "Remote resource may be unavailable %d.\n", status );
+        Rf_error( "Remote resource may be unavailable %d.\n", status );
     }
 
     if ( status < 0 ) {

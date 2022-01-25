@@ -55,12 +55,12 @@ void printGenQueryResults( char* cmd, rcComm_t *Conn, int status, genQueryOut_t 
         lastCommandStatus = 0;
     }
     if ( status != 0 && status != CAT_NO_ROWS_FOUND ) {
-        ::Rf_error( "[imeta::%s] rcGenQuery: %d\n", cmd, status );
+        Rf_error( "[imeta::%s] rcGenQuery: %d\n", cmd, status );
     }
     else {
         if ( status == CAT_NO_ROWS_FOUND ) {
             if ( printCount == 0 ) {
-                ::Rf_error( "[imeta::%s] No rows found\n", cmd );
+                Rf_error( "[imeta::%s] No rows found\n", cmd );
             }
         }
         else {
@@ -163,7 +163,7 @@ int showDataObj( char* cmd, char *name, char *attrName, int wild )
         /* reset v1 and v2 for when full path or relative path entered */
         if ( int status = splitPathByKey( fullName, myDirName, MAX_NAME_LEN, myFileName, MAX_NAME_LEN, '/' ) )
         {
-            ::Rf_error( "[imeta::%s] splitPathByKey failed in showDataObj with status %d\n", cmd, status );
+            Rf_error( "[imeta::%s] splitPathByKey failed in showDataObj with status %d\n", cmd, status );
         }
 
         v1 = "='";
@@ -219,8 +219,8 @@ int showDataObj( char* cmd, char *name, char *attrName, int wild )
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Dataobject %s does not exist\n", cmd, fullName );
-            ::Rf_error( "[imeta::%s] or, if 'strict' access control is enabled, you may not have access.\n", cmd );
+            Rf_error( "[imeta::%s] Dataobject %s does not exist\n", cmd, fullName );
+            Rf_error( "[imeta::%s] or, if 'strict' access control is enabled, you may not have access.\n", cmd );
             return 0;
         }
         printGenQueryResults( cmd, Conn, status, genQueryOut, columnNames );
@@ -296,7 +296,7 @@ int showColl( char* cmd, char *name, char *attrName, int wild )
     	error_name += "/";
     	error_name += name;
     	size_t error_length = strlen( name ) + 1 + strlen( cwd ) + 1;
-        ::Rf_error( 	"[imeta::%s] showColl :: error - fullName could not be explicitly null terminated: %s, size: %d\n",
+        Rf_error( 	"[imeta::%s] showColl :: error - fullName could not be explicitly null terminated: %s, size: %d\n",
         		    cmd,
         			error_name.c_str(),
 					error_length);
@@ -351,7 +351,7 @@ int showColl( char* cmd, char *name, char *attrName, int wild )
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Collection %s does not exist.\n", cmd, fullName );
+            Rf_error( "[imeta::%s] Collection %s does not exist.\n", cmd, fullName );
             return 0;
         }
     }
@@ -452,7 +452,7 @@ int showResc( char* cmd, char *name, char *attrName, int wild )
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Resource %s does not exist.\n", cmd, name );
+            Rf_error( "[imeta::%s] Resource %s does not exist.\n", cmd, name );
             return 0;
         }
     }
@@ -489,7 +489,7 @@ int showUser( char* cmd, char *name, char *attrName, int wild )
 
     status = parseUserName( name, userName, userZone );
     if ( status ) {
-        ::Rf_error( "[imeta::%s] sizeof( userZone ) %s\n", cmd, myEnv.rodsZone );
+        Rf_error( "[imeta::%s] sizeof( userZone ) %s\n", cmd, myEnv.rodsZone );
     }
 
     genQueryInp_t genQueryInp;
@@ -567,7 +567,7 @@ int showUser( char* cmd, char *name, char *attrName, int wild )
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] User %s does not exist.\n", cmd, name );
+            Rf_error( "[imeta::%s] User %s does not exist.\n", cmd, name );
             return 0;
         }
     }
@@ -667,7 +667,7 @@ int queryDataObj( char* cmd, char *cmdToken[] )
     }
 
     if ( *cmdToken[cmdIx] != '\0' ) {
-        ::Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
+        Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
         return -2;
     }
 
@@ -773,7 +773,7 @@ int queryCollection( char* cmd, char *cmdToken[] )
     }
 
     if ( *cmdToken[cmdIx] != '\0' ) {
-        ::Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
+        Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
         return -2;
     }
 
@@ -1012,12 +1012,12 @@ int modCopyAVUMetadata( char *arg0, char *arg1, char *arg2, char *arg3,
             len = Err->len;
             for ( i = 0; i < len; i++ ) {
                 ErrMsg = Err->errMsg[i];
-                ::Rf_error( "[imeta::%s] Level %d: %s", i, arg0, ErrMsg->msg );
+                Rf_error( "[imeta::%s] Level %d: %s", i, arg0, ErrMsg->msg );
             }
         }
         char *mySubName = NULL;
         const char *myName = rodsErrorName( status, &mySubName );
-        ::Rf_error( "[imeta::%s] rcModAVUMetadata failed with error %d %s %s", arg0, status, myName, mySubName );
+        Rf_error( "[imeta::%s] rcModAVUMetadata failed with error %d %s %s", arg0, status, myName, mySubName );
         //free( mySubName );
     }
 
@@ -1028,17 +1028,17 @@ int modCopyAVUMetadata( char *arg0, char *arg1, char *arg2, char *arg3,
         strncat( tempName, myEnv.rodsZone, MAX_NAME_LEN - strlen( tempName ) );
         len = strlen( tempName );
         if ( strncmp( tempName, fullName1, len ) != 0 ) {
-        	::Rf_error( "[imeta::%s] Cannot copy metadata from a remote zone.\n", arg0 );
+        	Rf_error( "[imeta::%s] Cannot copy metadata from a remote zone.\n", arg0 );
             isRemote = 1;
         }
         if ( strncmp( tempName, fullName2, len ) != 0 ) {
-        	::Rf_error( "[imeta::%s] Cannot copy metadata to a remote zone.\n", arg0 );
+        	Rf_error( "[imeta::%s] Cannot copy metadata to a remote zone.\n", arg0 );
             isRemote = 1;
         }
         if ( isRemote ) {
-        	::Rf_error( "[imeta::%s] Copying of metadata is done via SQL within each ICAT\n", arg0 );
-        	::Rf_error( "[imeta::%s] for efficiency.  Copying metadata between zones is\n", arg0 );
-        	::Rf_error( "[imeta::%s] not implemented.\n", arg0 );
+        	Rf_error( "[imeta::%s] Copying of metadata is done via SQL within each ICAT\n", arg0 );
+        	Rf_error( "[imeta::%s] for efficiency.  Copying metadata between zones is\n", arg0 );
+        	Rf_error( "[imeta::%s] not implemented.\n", arg0 );
         }
     }
     return status;
@@ -1094,12 +1094,12 @@ modAVUMetadata( char *arg0, char *arg1, char *arg2, char *arg3,
             len = Err->len;
             for ( i = 0; i < len; i++ ) {
                 ErrMsg = Err->errMsg[i];
-                ::Rf_error( "[imeta::%s] Level %d: %s", arg0, i, ErrMsg->msg );
+                Rf_error( "[imeta::%s] Level %d: %s", arg0, i, ErrMsg->msg );
             }
         }
         char *mySubName = NULL;
         const char *myName = rodsErrorName( status, &mySubName );
-        ::Rf_error("[imeta::%s] rcModAVUMetadata failed with error %d: %s %s", arg0, status, myName, mySubName);
+        Rf_error("[imeta::%s] rcModAVUMetadata failed with error %d: %s %s", arg0, status, myName, mySubName);
         //free( mySubName );
     }
     return status;
@@ -1155,7 +1155,7 @@ int doCommand(
     	object_type.empty()
 	  )
     {
-    	::Rf_error("[imeta::???] Command and object type is required!\n");
+    	Rf_error("[imeta::???] Command and object type is required!\n");
     	return(-3);
     }
 
@@ -1303,7 +1303,7 @@ int doCommand(
     {
     	if(query.empty())
     	{
-    		::Rf_error("[imeta::%s] Query string is required!\n", command.c_str());
+    		Rf_error("[imeta::%s] Query string is required!\n", command.c_str());
 			char *msgs[] = {
 				(char*)" qu -d|C|R|u AttName Op AttVal [...] (Query objects with matching AVUs)",
 				(char*)"Query across AVUs for the specified type of item",
@@ -1334,7 +1334,7 @@ int doCommand(
 				if ( strlen( msgs[i] ) == 0 ) {
 					return 0;
 				}
-				::Rf_error( "[imeta::%s] %s\n", command.c_str(), msgs[i] );
+				Rf_error( "[imeta::%s] %s\n", command.c_str(), msgs[i] );
 			}
     		return(-2);
     	}
@@ -1384,7 +1384,7 @@ int doCommand(
         if ( object_type == "R" || object_type == "r" )
         {
             if ( *cmdToken[5] != '\0' ) {
-                ::Rf_error( "[imeta::%s] Unrecognized input\n", command.c_str() );
+                Rf_error( "[imeta::%s] Unrecognized input\n", command.c_str() );
                 return -2;
             }
             queryResc( (char*)command.c_str(), cmdToken[2], cmdToken[3], cmdToken[4] );
@@ -1417,7 +1417,7 @@ int doCommand(
 
     if ( ! command.empty() )
     {
-        ::Rf_error( "[imeta] Unrecognized subcommand '%s', try 'imeta help'\n", command.c_str() );
+        Rf_error( "[imeta] Unrecognized subcommand '%s', try 'imeta help'\n", command.c_str() );
         return -2;
     }
 
@@ -1459,7 +1459,7 @@ int imeta
 
     status = getRodsEnv( &myEnv );
     if ( status < 0 ) {
-        ::Rf_error( "[imeta] getRodsEnv error. status = %d", status);
+        Rf_error( "[imeta] getRodsEnv error. status = %d", status);
         return( 1 );
     }
 
@@ -1473,7 +1473,7 @@ int imeta
     if ( Conn == NULL ) {
         char *mySubName = NULL;
         const char *myName = rodsErrorName( errMsg.status, &mySubName );
-        ::Rf_error( "[imeta] rcConnect failure %s (%s) (%d) %s",
+        Rf_error( "[imeta] rcConnect failure %s (%s) (%d) %s",
                  myName,
                  mySubName,
                  errMsg.status,
@@ -1539,7 +1539,7 @@ int imeta
 						query );
 
     if( status < 0 ) {
-    	::Rf_error("[imeta::%s] Execution error %d\n", command.c_str(), status);
+    	Rf_error("[imeta::%s] Execution error %d\n", command.c_str(), status);
     }
 
     printErrorStack( Conn->rError );
