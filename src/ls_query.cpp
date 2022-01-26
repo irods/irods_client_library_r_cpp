@@ -88,7 +88,7 @@ void LsOutput::process_collection(char* path ){
     status = rcGenQuery(myConn, &genQueryInp, &genQueryOutPtr);
     if ( status < 0 ) {
         if ( status != CAT_NO_ROWS_FOUND ) {
-            ::Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
+            Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
             return;
         }
     }
@@ -116,7 +116,7 @@ void LsOutput::process_collection(char* path ){
     status = rcGenQuery(myConn, &genQueryInp, &genQueryOutPtr);
     if ( status < 0 ) {
         if ( status != CAT_NO_ROWS_FOUND ) {
-            ::Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
+            Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
             return;
         }
     }
@@ -157,7 +157,7 @@ void LsOutput::process_data_object(char* path){
     status = rcGenQuery(myConn, &genQueryInp, &genQueryOutPtr);
     if ( status < 0 ) {
         if ( status != CAT_NO_ROWS_FOUND ) {
-            ::Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
+            Rf_error("rirods exception (rcGenQuery error for \"%s\")\n", path);
             return;
         }
     }

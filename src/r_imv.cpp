@@ -67,10 +67,10 @@ std::string imv(
 
     // Process input parameters
     if(src_path.empty()) {
-      ::Rf_error( "Error iget: srcPath is empty!\n" );
+      Rf_error( "Error iget: srcPath is empty!\n" );
     }
     if(dest_path.empty()) {
-      ::Rf_error( "Error iget: destPath is empty!\n" );
+      Rf_error( "Error iget: destPath is empty!\n" );
     }
     if( verbose )
     	myRodsArgs.verbose = 1;
@@ -78,19 +78,19 @@ std::string imv(
     status = getRodsEnv( &myEnv );
 
     if ( status < 0 ) {
-      ::Rf_error( "[imv] getRodsEnv error %d.\n", status );
+      Rf_error( "[imv] getRodsEnv error %d.\n", status );
     }
 
     conn = rcConnect( myEnv.rodsHost, myEnv.rodsPort, myEnv.rodsUserName, myEnv.rodsZone, 1, &errMsg );
 
     if ( conn == NULL ) {
-      ::Rf_error("[imv] Cannot connect\n");
+      Rf_error("[imv] Cannot connect\n");
     }
 
     status = clientLogin( conn );
     if ( status != 0 ) {
         rcDisconnect( conn );
-      ::Rf_error("[imv] Connection failed with status %d\n", status);
+      Rf_error("[imv] Connection failed with status %d\n", status);
     }
 
     // Validate src_path user input against iRODS server
@@ -101,7 +101,7 @@ std::string imv(
     status = addSrcInPath((rodsPathInp_t*)(&rodsPathInp), src_path.c_str());
     status = parseRodsPath( &(rodsPathInp.srcPath[0]), &myEnv );
     if( status < 0 ) {
-      ::Rf_error("[imv] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
+      Rf_error("[imv] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
     }
 
     // Validate dest_path user input
@@ -115,7 +115,7 @@ std::string imv(
 
 	status = parseRodsPath( rodsPathInp.destPath, &myEnv );
     if( status < 0 ) {
-      ::Rf_error("[imv] Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp.destPath->inPath);
+      Rf_error("[imv] Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp.destPath->inPath);
     }
 
     status = mvUtil( conn, &myRodsArgs, &rodsPathInp );
@@ -124,7 +124,7 @@ std::string imv(
     rcDisconnect( conn );
 
     if ( status < 0 ) {
-      ::Rf_error("[imv] Failed with status %d\n");
+      Rf_error("[imv] Failed with status %d\n");
     }
 
     return( std::string(rodsPathInp.destPath->outPath) );

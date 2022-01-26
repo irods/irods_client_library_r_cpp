@@ -36,7 +36,7 @@ Rcpp::DataFrame ils( std::vector< std::string > args )
 
     status = getRodsEnv( &env );
     if ( status < 0 ) {
-        ::Rf_error( "ils: getRodsEnv error %d", status );
+        Rf_error( "ils: getRodsEnv error %d", status );
     }
 
     conn = rcConnect(
@@ -47,14 +47,14 @@ Rcpp::DataFrame ils( std::vector< std::string > args )
                0, &errMsg );
 
     if ( conn == NULL ) {
-        ::Rf_error( "ils: Cannotconnect" );
+        Rf_error( "ils: Cannotconnect" );
     }
 
     if ( strcmp( env.rodsUserName, PUBLIC_USER_NAME ) != 0 ) {
         status = clientLogin( conn );
         if ( status != 0 ) {
             rcDisconnect( conn );
-            ::Rf_error( "ils: Conection error %d", status );
+            Rf_error( "ils: Conection error %d", status );
         }
     }
 
@@ -67,14 +67,14 @@ Rcpp::DataFrame ils( std::vector< std::string > args )
 
         status = parseRodsPath(&rodsPath, &env);
         if ( status != 0 ) {
-            ::Rf_error( "Path parsing error for \"%s\" (%i)\n", itr->c_str(), status);
+            Rf_error( "Path parsing error for \"%s\" (%i)\n", itr->c_str(), status);
             continue;
         }
 
         status = getRodsObjType(conn, &rodsPath);
 
         if ( status != EXIST_ST ) {
-            ::Rf_error( "Irods object does not exist \"%s\" (%i)\n", itr->c_str(), status);
+            Rf_error( "Irods object does not exist \"%s\" (%i)\n", itr->c_str(), status);
             continue;
         }
 
@@ -86,7 +86,7 @@ Rcpp::DataFrame ils( std::vector< std::string > args )
                 lsOutput.process_data_object(rodsPath.outPath);
                 break;
             default:
-                ::Rf_error("Unsupported objType for path \"%s\" (%i)\n", itr->c_str(), rodsPath.objType);
+                Rf_error("Unsupported objType for path \"%s\" (%i)\n", itr->c_str(), rodsPath.objType);
                 continue;
         }
     }

@@ -26,7 +26,7 @@ std::string ipwd()
 
     status = getRodsEnv( &myEnv );
     if ( status != 0 ) {
-        ::Rf_error( "Failed with error %d\n", status );
+        Rf_error( "Failed with error %d\n", status );
         return "";
     }
 

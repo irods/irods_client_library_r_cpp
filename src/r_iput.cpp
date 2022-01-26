@@ -50,7 +50,7 @@ r_put_iCommandProgStat( operProgress_t *operProgress ) {
     }
     else if ( ( status = splitPathByKey( operProgress->curFileName,
                                          myDir, MAX_NAME_LEN, myFile, MAX_NAME_LEN, '/' ) ) < 0 ) {
-        ::Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
+        Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
                   operProgress->curFileName, status );
         return NULL;
     }
@@ -139,15 +139,15 @@ std::string iput(
     rodsEnv myEnv;
     int status = getRodsEnv( &myEnv );
     if ( status < 0 ) {
-      ::Rf_error( "ils: getRodsEnv error %d", status );
+      Rf_error( "ils: getRodsEnv error %d", status );
     }
 
     // Process input parameters
     if(src_path.empty()) {
-      ::Rf_error( "Error iget: srcPath is empty!" );
+      Rf_error( "Error iget: srcPath is empty!" );
     }
     if(dest_path.empty()) {
-      ::Rf_error( "Error iget: destPath is empty!" );
+      Rf_error( "Error iget: destPath is empty!" );
     }
     if( force )
     	myRodsArgs.force = 1;
@@ -181,7 +181,7 @@ std::string iput(
     status = addSrcInPath((rodsPathInp_t*)(rodsPathInp.get()), src_path.c_str());
     status = parseLocalPath( &(rodsPathInp->srcPath[0]) );
     if( status < 0 ) {
-      ::Rf_error("rods Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp->srcPath[0].inPath);
+      Rf_error("rods Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp->srcPath[0].inPath);
     }
 
     // Validate dest_path user input
@@ -196,21 +196,21 @@ std::string iput(
     status = parseRodsPath( rodsPathInp->destPath, &myEnv );
     if( status < 0 ) {
       free(rodsPathInp->destPath);
-      ::Rf_error("rods Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp->destPath->inPath);
+      Rf_error("rods Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp->destPath->inPath);
     }
 
     conn = rcConnect( myEnv.rodsHost, myEnv.rodsPort, myEnv.rodsUserName, myEnv.rodsZone, reconnFlag, &errMsg );
 
     if ( conn == NULL ) {
       free(rodsPathInp->destPath);
-      ::Rf_error("[iput] Cannot connect\n");
+      Rf_error("[iput] Cannot connect\n");
     }
 
     status = clientLogin( conn );
     if ( status != 0 ) {
       rcDisconnect( conn );
       free(rodsPathInp->destPath);
-      ::Rf_error("[iput] Connection error %d\n", status);
+      Rf_error("[iput] Connection error %d\n", status);
     }
 
     if ( myRodsArgs.progressFlag == True ) {
@@ -224,7 +224,7 @@ std::string iput(
 
     if ( status < 0 ) {
       free(rodsPathInp->destPath);
-      ::Rf_error("[iput] iput failed with status %d\n", status);
+      Rf_error("[iput] iput failed with status %d\n", status);
     }
     else{
       std::string destination_path(rodsPathInp->destPath->outPath);

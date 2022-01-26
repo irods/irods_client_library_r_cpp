@@ -25,7 +25,7 @@ using namespace Rcpp;
 //'
 Rcpp::DataFrame isearch(Rcpp::DataFrame constraints){
     if ( constraints.nrows()==0){
-        ::Rf_error( "Error: at least one attribute value (filter) must be given");
+        Rf_error( "Error: at least one attribute value (filter) must be given");
     }
 
     CharacterVector constraintAttributes  = constraints["Attribute"];
@@ -39,7 +39,7 @@ Rcpp::DataFrame isearch(Rcpp::DataFrame constraints){
 
     status = getRodsEnv( &env );
     if ( status < 0 ) {
-        ::Rf_error( "ils: getRodsEnv error %d", status );
+        Rf_error( "ils: getRodsEnv error %d", status );
     }
 
     conn = rcConnect(
@@ -50,14 +50,14 @@ Rcpp::DataFrame isearch(Rcpp::DataFrame constraints){
                0, &errMsg );
 
     if ( conn == NULL ) {
-        ::Rf_error( "ils: Connection error %d", status );
+        Rf_error( "ils: Connection error %d", status );
     }
 
     if ( strcmp( env.rodsUserName, PUBLIC_USER_NAME ) != 0 ) {
         status = clientLogin( conn );
         if ( status != 0 ) {
             rcDisconnect( conn );
-            ::Rf_error( "ils: Conection error %d", status );
+            Rf_error( "ils: Conection error %d", status );
         }
     }
 
@@ -102,7 +102,7 @@ Rcpp::DataFrame isearch(Rcpp::DataFrame constraints){
     status = rcGenQuery(conn, &genQueryInp, &genQueryOutP);
     if ( status < 0 ) {
         if ( status != CAT_NO_ROWS_FOUND ) {
-            ::Rf_error("rirods exception\n");
+            Rf_error("rirods exception\n");
         }
     }
 

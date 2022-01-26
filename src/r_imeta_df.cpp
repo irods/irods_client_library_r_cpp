@@ -207,13 +207,13 @@ MetaData printGenQueryResults( 	rcComm_t *Conn,
         return(result);
     }
     if ( status != 0 && status != CAT_NO_ROWS_FOUND ) {
-        ::Rf_error( "[imeta::%s] rcGenQuery: %d\n", cmd, status );
+        Rf_error( "[imeta::%s] rcGenQuery: %d\n", cmd, status );
         return(result);
     }
     else {
         if ( status == CAT_NO_ROWS_FOUND ) {
             if ( printCount == 0 ) {
-                ::Rf_error( "[imeta::%s] No rows found\n", cmd );
+                Rf_error( "[imeta::%s] No rows found\n", cmd );
                 return(result);
             }
         }
@@ -262,7 +262,7 @@ MetaData printGenQueryResults( 	rcComm_t *Conn,
                             }
                             else
                             {
-                            	::Rf_error("[imeta:%s] Unknown metadata column data %s=%s\n",
+                            	Rf_error("[imeta:%s] Unknown metadata column data %s=%s\n",
                             			 cmd, column_name.c_str(), column_value.c_str());
                             }
                             printCount++;
@@ -353,7 +353,7 @@ df::MetaData showDataObj( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, ch
         /* reset v1 and v2 for when full path or relative path entered */
         if ( int status = splitPathByKey( fullName, myDirName, MAX_NAME_LEN, myFileName, MAX_NAME_LEN, '/' ) )
         {
-            ::Rf_error( "[imeta::%s] splitPathByKey failed in showDataObj with status %d\n", cmd, status );
+            Rf_error( "[imeta::%s] splitPathByKey failed in showDataObj with status %d\n", cmd, status );
         }
 
         v1 = "='";
@@ -409,8 +409,8 @@ df::MetaData showDataObj( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, ch
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             //lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Dataobject %s does not exist\n", cmd, fullName );
-            ::Rf_error( "[imeta::%s] or, if 'strict' access control is enabled, you may not have access.\n", cmd );
+            Rf_error( "[imeta::%s] Dataobject %s does not exist\n", cmd, fullName );
+            Rf_error( "[imeta::%s] or, if 'strict' access control is enabled, you may not have access.\n", cmd );
             return result;
         }
         result = printGenQueryResults( Conn, cmd, status, printCount, genQueryOut, columnNames );
@@ -488,7 +488,7 @@ df::MetaData showColl( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, char 
     	error_name += "/";
     	error_name += name;
     	size_t error_length = strlen( name ) + 1 + strlen( cwd ) + 1;
-        ::Rf_error( 	"[imeta::%s] showColl :: error - fullName could not be explicitly null terminated: %s, size: %d\n",
+        Rf_error( 	"[imeta::%s] showColl :: error - fullName could not be explicitly null terminated: %s, size: %d\n",
         		    cmd,
         			error_name.c_str(),
 					error_length);
@@ -543,7 +543,7 @@ df::MetaData showColl( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, char 
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             //lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Collection %s does not exist.\n", cmd, fullName );
+            Rf_error( "[imeta::%s] Collection %s does not exist.\n", cmd, fullName );
             return result;
         }
     }
@@ -646,7 +646,7 @@ df::MetaData showResc( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, char 
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             //lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] Resource %s does not exist.\n", cmd, name );
+            Rf_error( "[imeta::%s] Resource %s does not exist.\n", cmd, name );
             return result;
         }
     }
@@ -685,7 +685,7 @@ df::MetaData showUser( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, char 
 
     status = parseUserName( name, userName, userZone );
     if ( status ) {
-        ::Rf_error( "[imeta::%s] sizeof( userZone ) %s\n", cmd, Env.rodsZone );
+        Rf_error( "[imeta::%s] sizeof( userZone ) %s\n", cmd, Env.rodsZone );
     }
 
     genQueryInp_t genQueryInp;
@@ -763,7 +763,7 @@ df::MetaData showUser( rcComm_t *Conn, rodsEnv Env, char* cmd, char *name, char 
         }
         if ( status == CAT_NO_ROWS_FOUND ) {
             //lastCommandStatus = status;
-            ::Rf_error( "[imeta::%s] User %s does not exist.\n", cmd, name );
+            Rf_error( "[imeta::%s] User %s does not exist.\n", cmd, name );
             return result;
         }
     }
@@ -865,7 +865,7 @@ df::MetaData queryDataObj( rcComm_t *Conn, rodsEnv Env, char* cmd, char *cmdToke
     }
 
     if ( *cmdToken[cmdIx] != '\0' ) {
-        ::Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
+        Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
         return result; //-2;
     }
 
@@ -973,7 +973,7 @@ df::MetaData queryCollection( rcComm_t *Conn, rodsEnv Env, char* cmd, char *cmdT
     }
 
     if ( *cmdToken[cmdIx] != '\0' ) {
-        ::Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
+        Rf_error( "[imeta::%s] Unrecognized input\n", cmd );
         return result; //-2;
     }
 
@@ -1206,7 +1206,7 @@ df::MetaData doCommand_df(
     	object_type.empty()
 	  )
     {
-    	::Rf_error("[imeta::???] Command and object type is required!\n");
+    	Rf_error("[imeta::???] Command and object type is required!\n");
     	finalStatus = -3;
     	return metas;
     }
@@ -1265,7 +1265,7 @@ df::MetaData doCommand_df(
     {
     	if(query.empty())
     	{
-    		::Rf_error("[imeta::%s] Query string is required!\n", command.c_str());
+    		Rf_error("[imeta::%s] Query string is required!\n", command.c_str());
 			char *msgs[] = {
 				(char*)" qu -d|C|R|u AttName Op AttVal [...] (Query objects with matching AVUs)",
 				(char*)"Query across AVUs for the specified type of item",
@@ -1297,7 +1297,7 @@ df::MetaData doCommand_df(
 		        	finalStatus = 0;
 					return metas;
 				}
-				::Rf_error( "[imeta::%s] %s\n", command.c_str(), msgs[i] );
+				Rf_error( "[imeta::%s] %s\n", command.c_str(), msgs[i] );
 			}
         	finalStatus = -2;
     		return metas;
@@ -1355,7 +1355,7 @@ df::MetaData doCommand_df(
         if ( object_type == "R" || object_type == "r" )
         {
             if ( *cmdToken[5] != '\0' ) {
-                ::Rf_error( "[imeta::%s] Unrecognized input\n", command.c_str() );
+                Rf_error( "[imeta::%s] Unrecognized input\n", command.c_str() );
             	finalStatus = -2;
                 return metas;
             }
@@ -1375,7 +1375,7 @@ df::MetaData doCommand_df(
 
     if ( ! command.empty() )
     {
-        ::Rf_error( "[imeta] Unrecognized subcommand '%s', try 'imeta help'\n", command.c_str() );
+        Rf_error( "[imeta] Unrecognized subcommand '%s', try 'imeta help'\n", command.c_str() );
     	finalStatus = -2;
         return metas;
     }
@@ -1423,7 +1423,7 @@ df::MetaData imeta_list (
 
     status = getRodsEnv( &myEnv );
     if ( status < 0 ) {
-        ::Rf_error( "[imeta] getRodsEnv error. status = %d", status);
+        Rf_error( "[imeta] getRodsEnv error. status = %d", status);
         status = 1;
         return result;
     }
@@ -1438,7 +1438,7 @@ df::MetaData imeta_list (
     if ( Conn == NULL ) {
         char *mySubName = NULL;
         const char *myName = rodsErrorName( errMsg.status, &mySubName );
-        ::Rf_error( "[imeta] rcConnect failure %s (%s) (%d) %s",
+        Rf_error( "[imeta] rcConnect failure %s (%s) (%d) %s",
                  myName,
                  mySubName,
                  errMsg.status,
@@ -1510,7 +1510,7 @@ df::MetaData imeta_list (
 							query );
 
     if( status < 0 ) {
-    	::Rf_error("[imeta::%s] Execution error %d\n", command.c_str(), status);
+    	Rf_error("[imeta::%s] Execution error %d\n", command.c_str(), status);
     }
 
     printErrorStack( Conn->rError );

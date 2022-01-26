@@ -38,7 +38,7 @@ std::string imkdir( std::string rods_path="", bool parents=false )
 
     // Process input parameters
     if(rods_path.empty()) {
-      ::Rf_error("[imkdir] Error rods_path is empty!\n" );
+      Rf_error("[imkdir] Error rods_path is empty!\n" );
     }
 
     // We have to reset all to 0s because we do not use
@@ -54,19 +54,19 @@ std::string imkdir( std::string rods_path="", bool parents=false )
     status = getRodsEnv( &myEnv );
 
     if ( status < 0 ) {
-      ::Rf_error("[imkdir] getRodsEnv error %d. \n", status );
+      Rf_error("[imkdir] getRodsEnv error %d. \n", status );
     }
 
     conn = rcConnect( myEnv.rodsHost, myEnv.rodsPort, myEnv.rodsUserName, myEnv.rodsZone, 0, &errMsg );
 
     if ( conn == NULL ) {
-      ::Rf_error("ils: Connection error %d", status );
+      Rf_error("ils: Connection error %d", status );
     }
 
     status = clientLogin( conn );
     if ( status != 0 ) {
         rcDisconnect( conn );
-        ::Rf_error( "ils: Connection error %d", status );
+        Rf_error( "ils: Connection error %d", status );
     }
 
     // Prepare the directory path
@@ -76,7 +76,7 @@ std::string imkdir( std::string rods_path="", bool parents=false )
     status = addSrcInPath((rodsPathInp_t*)(&rodsPathInp), rods_path.c_str());
     status = parseRodsPath( &(rodsPathInp.srcPath[0]), &myEnv );
     if( status < 0 ) {
-      ::Rf_error("[imkdir] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
+      Rf_error("[imkdir] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
     }
 
     status = mkdirUtil( conn, &myRodsArgs, &rodsPathInp );
@@ -85,7 +85,7 @@ std::string imkdir( std::string rods_path="", bool parents=false )
     rcDisconnect( conn );
 
     if ( status < 0 ) {
-      ::Rf_error("[imkdir] Error: %d", status);
+      Rf_error("[imkdir] Error: %d", status);
     }
 
     return(std::string(rodsPathInp.srcPath->outPath));

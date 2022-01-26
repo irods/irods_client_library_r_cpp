@@ -11,7 +11,3 @@ sudo docker container run -d \
   -e PASSWORD=pass \
   --name rirods-document \
   rirods:build
-
-# clean src
-rm -f src/*.o && rm -f src/*.so && rm -f src/*.dll
-

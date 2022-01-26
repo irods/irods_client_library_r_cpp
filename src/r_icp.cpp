@@ -44,7 +44,7 @@ r_cp_iCommandProgStat( operProgress_t *operProgress ) {
     }
     else if ( ( status = splitPathByKey( operProgress->curFileName,
                                          myDir, MAX_NAME_LEN, myFile, MAX_NAME_LEN, '/' ) ) < 0 ) {
-        ::Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
+        Rf_error( "iCommandProgStat: splitPathByKey for %s error, status = %d",
                   operProgress->curFileName, status );
         return NULL;
     }
@@ -125,10 +125,10 @@ std::string icp(
 
     // Process input parameters
     if(src_path.empty()) {
-      ::Rf_error( "Error iget: srcPath is empty!" );
+      Rf_error( "Error iget: srcPath is empty!" );
     }
     if(dest_path.empty()) {
-      ::Rf_error( "Error iget: destPath is empty!" );
+      Rf_error( "Error iget: destPath is empty!" );
     }
     if( force )
     	myRodsArgs.force = 1;
@@ -144,7 +144,7 @@ std::string icp(
     status = getRodsEnv( &myEnv );
 
     if ( status < 0 ) {
-      ::Rf_error( "[icp] getRodsEnv error  %d.\n", status );
+      Rf_error( "[icp] getRodsEnv error  %d.\n", status );
     }
 
     if ( myRodsArgs.reconnect == True ) {
@@ -157,13 +157,13 @@ std::string icp(
     conn = rcConnect( myEnv.rodsHost, myEnv.rodsPort, myEnv.rodsUserName, myEnv.rodsZone, reconnFlag, &errMsg );
 
     if ( conn == NULL ) {
-      ::Rf_error( "[icp] Cannot connect" );
+      Rf_error( "[icp] Cannot connect" );
     }
 
     status = clientLogin( conn );
     if ( status != 0 ) {
       rcDisconnect( conn );
-      ::Rf_error( "[icd] Conection error %d", status );
+      Rf_error( "[icd] Conection error %d", status );
     }
 
     if ( myRodsArgs.progressFlag == True ) {
@@ -178,7 +178,7 @@ std::string icp(
     status = addSrcInPath((rodsPathInp_t*)(&rodsPathInp), src_path.c_str());
     status = parseRodsPath( &(rodsPathInp.srcPath[0]), &myEnv );
     if( status < 0 ) {
-      ::Rf_error("[icp] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
+      Rf_error("[icp] Error: %d : invalid iRODS src_path %s!\n", status, rodsPathInp.srcPath[0]);
     }
 
     // Validate dest_path user input
@@ -192,7 +192,7 @@ std::string icp(
 
 	status = parseRodsPath( rodsPathInp.destPath, &myEnv );
     if( status < 0 ) {
-      ::Rf_error("[icp] Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp.destPath->inPath);
+      Rf_error("[icp] Error: %d : invalid iRODS dest_path %s!\n", status, rodsPathInp.destPath->inPath);
     }
 
     status = cpUtil( conn, &myEnv, &myRodsArgs, &rodsPathInp );
@@ -201,7 +201,7 @@ std::string icp(
     rcDisconnect( conn );
 
     if ( status < 0 ) {
-      ::Rf_error("[icp] Error: %d\n", status);
+      Rf_error("[icp] Error: %d\n", status);
     }
     else {
         return( std::string(rodsPathInp.destPath->outPath) );
